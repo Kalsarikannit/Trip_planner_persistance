@@ -8,7 +8,7 @@
  * that attraction's id. Selecting an option looks up the attraction by id,
  * then tells the trip module to add the attraction.
  */
- 
+
 $(function () {
 
     // jQuery selects
@@ -19,10 +19,53 @@ $(function () {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~
     // This looks like a great place to start AJAX work with a request for all attractions. Don't forget that these kinds of requests are async, so we won't have all of the attractions until it comes back, but once it comes back we can make the option tags
+  //   $.ajax({
+  //     method: 'VERB',
+  //     url: '/api/option/restaurants',
+  //     // data: someDataToSend, // e.g. for POST requests
+  //   })
+  //   .then(function (responseData) {
+  // // some code to run when the response comes back
+  //     responseData.forEach(function(restaurant){
+  //       console.log(restaurant.name);
+  // });
+  //   })
+  //   .catch(function (errorObj) {
+  // // some code to run if the request errors out
+  //   });
+
+  $.get('/api/option/restaurants')
+  .then(function (restaurants) {
+    restaurants.forEach(function(restaurant){
+      // console.log('made it to AJAX')
+      console.log(restaurant.name);
+    });
+  })
+  .catch( console.error.bind(console) );
+
+  $.get('/api/option/hotels')
+  .then(function (hotels) {
+    hotels.forEach(function(hotel){
+      makeOption(hotel)}, $hotelSelect)
+      // console.log('made it to AJAX')
+      // console.log(hotels.name);
+    })
+  // })
+  .catch( console.error.bind(console) );
+
+  $.get('/api/option/activities')
+  .then(function (activities) {
+    activities.forEach(function(activities){
+      // console.log('made it to AJAX')
+      console.log(activities.name);
+    });
+  })
+  .catch( console.error.bind(console) );
+
   // ~~~~~~~~~~~~~~~~~~~~~~~
 
     // make all the option tags (second arg of `forEach` is a `this` binding)
-    hotels.forEach(makeOption, $hotelSelect);
+    // hotels.forEach(makeOption, $hotelSelect);
     restaurants.forEach(makeOption, $restaurantSelect);
     activities.forEach(makeOption, $activitySelect);
 
