@@ -11,8 +11,8 @@ Activity.belongsTo(Place);
 
 module.exports = {
 	db,
-	Activity,
+	Place,
 	Hotel,
 	Restaurant,
-	Place
+	Activity
 };
