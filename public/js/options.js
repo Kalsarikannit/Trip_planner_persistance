@@ -19,62 +19,47 @@ $(function () {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~
     // This looks like a great place to start AJAX work with a request for all attractions. Don't forget that these kinds of requests are async, so we won't have all of the attractions until it comes back, but once it comes back we can make the option tags
-  //   $.ajax({
-  //     method: 'VERB',
-  //     url: '/api/option/restaurants',
-  //     // data: someDataToSend, // e.g. for POST requests
-  //   })
-  //   .then(function (responseData) {
-  // // some code to run when the response comes back
-  //     responseData.forEach(function(restaurant){
-  //       console.log(restaurant.name);
-  // });
-  //   })
-  //   .catch(function (errorObj) {
-  // // some code to run if the request errors out
-  //   });
 
-  $.get('/api/option/restaurants')
-  .then(function (restaurants) {
-    restaurants.forEach(function(restaurant){
-      // console.log('made it to AJAX')
-      console.log(restaurant.name);
-    });
-  })
-  .catch( console.error.bind(console) );
-
-  $.get('/api/option/hotels')
+//add list of hotels to select.
+  $.get('/api/hotels')
   .then(function (hotels) {
-    hotels.forEach(function(hotel){
-      makeOption(hotel)}, $hotelSelect)
-      // console.log('made it to AJAX')
-      // console.log(hotels.name);
-    })
-  // })
-  .catch( console.error.bind(console) );
-
-  $.get('/api/option/activities')
-  .then(function (activities) {
-    activities.forEach(function(activities){
-      // console.log('made it to AJAX')
-      console.log(activities.name);
-    });
-  })
-  .catch( console.error.bind(console) );
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~
-
-    // make all the option tags (second arg of `forEach` is a `this` binding)
-    // hotels.forEach(makeOption, $hotelSelect);
-    restaurants.forEach(makeOption, $restaurantSelect);
-    activities.forEach(makeOption, $activitySelect);
-
-    // Once you've made AJAX calls to retrieve this information,
-    // call attractions.loadEnhancedAttractions in the fashion
-    // exampled below in order to integrate it.
+    hotels.forEach(makeOption,  $hotelSelect);
     attractionsModule.loadEnhancedAttractions('hotels', hotels);
+  })
+  .catch(function (errorObj) {
+    // console.log(errorObj);  
+  });
+
+
+  $.get('/api/restaurants')
+  .then(function (restaurants) {
+    restaurants.forEach(makeOption,  $restaurantSelect);
     attractionsModule.loadEnhancedAttractions('restaurants', restaurants);
+  })
+  .catch(function (errorObj) {
+    // console.log(errorObj);  
+  });
+
+  $.get('/api/activities')
+  .then(function (activities) {
+    activities.forEach(makeOption,  $activitySelect);
     attractionsModule.loadEnhancedAttractions('activities', activities);
+  })
+  .catch(function (errorObj) {
+    // console.log(errorObj);  
+  });
+
+  $.ajax({
+      method: 'GET',
+      url: '/api/days'
+    })
+    .then(function (data) { console.log('GET response data: ', data); })
+    .catch(console.error.bind(console));
+  // should log "GET response data: You GOT all the days"
+  
+
+  // should log "POST response data: You created a day!!"
+    // ~~~~~~~~~~~~~~~~~~~~~~~
 
     function makeOption(databaseAttraction) {
         var $option = $('<option></option>') // makes a new option tag
